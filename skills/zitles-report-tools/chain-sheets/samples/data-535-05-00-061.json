@@ -1,0 +1,67 @@
+{
+  "property_address": "305 Lakeside Drive, Unit C",
+  "city": "Mount Pleasant",
+  "state": "SC",
+  "zip_code": "29464",
+  "county": "Charleston",
+  "parcel_id": "535-05-00-061",
+  "legal_description": "Apt 3, Building C, Heritage Village Horizontal Property Regime",
+  "generated_date": "February 20, 2026",
+  "chain": [
+    {
+      "grantee": "JDT Industries LLC",
+      "grantor": "Mikell R. Scarborough, Master in Equity (Darcy Thompson, defendant)",
+      "book": "1353",
+      "page": "422",
+      "recorded_date": "12/1/2025",
+      "instrument_type": "Master's Deed (Foreclosure)",
+      "parcel_id": "535-05-00-061",
+      "consideration": "$79,000",
+      "notes": "Case No. 2023-CP-10-0573. Heritage Village HPR v. Darcy Thompson."
+    },
+    {
+      "grantee": "Darcy Thompson",
+      "grantor": "Scott A. Shank",
+      "book": "0015",
+      "page": "845",
+      "recorded_date": "10/16/2008",
+      "instrument_type": "Deed",
+      "parcel_id": "535-05-00-061",
+      "consideration": "$174,500",
+      "notes": ""
+    },
+    {
+      "grantee": "Scott A. Shank",
+      "grantor": "C. Denise Pfaff",
+      "book": "W522",
+      "page": "593",
+      "recorded_date": "1/19/2005",
+      "instrument_type": "Deed",
+      "parcel_id": "535-05-00-061",
+      "consideration": "$149,500",
+      "notes": ""
+    },
+    {
+      "grantee": "C. Denise Pfaff",
+      "grantor": "Charles M. Condon, Emily Y. Condon",
+      "book": "X173",
+      "page": "122",
+      "recorded_date": "4/15/1988",
+      "instrument_type": "Apartment Unit Deed",
+      "parcel_id": "535-05-00-061",
+      "consideration": "$12,728.71 + assumption of mortgage",
+      "notes": ""
+    },
+    {
+      "grantee": "Charles M. Condon, Emily Y. Condon",
+      "grantor": "Barbara Evans Hayes",
+      "book": "S129",
+      "page": "054",
+      "recorded_date": "10/19/1982",
+      "instrument_type": "Apartment Unit Deed",
+      "parcel_id": "535-05-00-061",
+      "consideration": "$46,665.43 + assumption of mortgages",
+      "notes": ""
+    }
+  ]
+}

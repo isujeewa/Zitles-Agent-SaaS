@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# CDK
+cdk.out/
+*.swp
+.cdk.staging/
+
+# Build / dist
+dist/
+build/
+*.egg
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.aws/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swo
+*.swp
+
+# Logs
+*.log
+logs/
+
+# Local runtime data
+searches/
+work/
+tmp/

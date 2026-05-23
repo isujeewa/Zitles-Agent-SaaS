@@ -1,0 +1,122 @@
+{
+  "property_address": "710 South Main Street",
+  "city": "Summerville",
+  "state": "SC",
+  "zip_code": "29483",
+  "county": "Dorchester",
+  "parcel_id": "137-10-06-007",
+  "legal_description": "Plat of a lot containing 0.753 Acres on a plat surveyed for E. Marshall Jessen & Herbert H. Jessen, Jr., dated January 19, 1990, prepared by Thomas W. Bailey, CE & RLS",
+  "generated_date": "February 20, 2026",
+  "chain": [
+    {
+      "grantee": "710 South Main Street, LLC",
+      "grantor": "William K. Turner",
+      "book": "16410",
+      "page": "281",
+      "recorded_date": "2/18/2026",
+      "instrument_type": "Quit Claim Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$5.00",
+      "notes": "Written date of deed is 7/10/2025. Exempt (Exemption 12)."
+    },
+    {
+      "grantee": "William K. Turner",
+      "grantor": "Christopher M. Grant & Carol Y. Koenecke-Grant",
+      "book": "16410",
+      "page": "264",
+      "recorded_date": "2/18/2026",
+      "instrument_type": "General Warranty Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$1,625,000",
+      "notes": "Written date of deed is 7/10/2025."
+    },
+    {
+      "grantee": "Christopher M. Grant & Carol Y. Koenecke-Grant (JTWROS)",
+      "grantor": "Veronique Elam",
+      "book": "11671",
+      "page": "184",
+      "recorded_date": "12/17/2018",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$965,000",
+      "notes": ""
+    },
+    {
+      "grantee": "Veronique Elam",
+      "grantor": "Gregory Elam",
+      "book": "7429",
+      "page": "213",
+      "recorded_date": "3/15/2010",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$5.00",
+      "notes": "Interspousal transfer. Exempt from deed recording fee."
+    },
+    {
+      "grantee": "Veronique Elam & Gregory Elam",
+      "grantor": "Veronique Elam (f/k/a Veronique Barsalou)",
+      "book": "4245",
+      "page": "312",
+      "recorded_date": "7/22/2004",
+      "instrument_type": "Warranty Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "Exempt",
+      "notes": "Consideration less than $100."
+    },
+    {
+      "grantee": "Veronique Barsalou",
+      "grantor": "Gregg P. Barsalou",
+      "book": "2308",
+      "page": "049",
+      "recorded_date": "10/29/1999",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$5.00",
+      "notes": "Pursuant to Order of Family Court (divorce transfer)."
+    },
+    {
+      "grantee": "Gregg P. Barselou & Veronique Barselou",
+      "grantor": "E. Marshall Jessen & H.H. Jessen, Jr.",
+      "book": "1230",
+      "page": "041",
+      "recorded_date": "11/8/1993",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$180,000",
+      "notes": ""
+    },
+    {
+      "grantee": "E. Marshall Jessen & H.H. Jessen, Jr.",
+      "grantor": "Lillian McD. Jessen",
+      "book": "603",
+      "page": "443",
+      "recorded_date": "2/9/1988",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$5.00",
+      "notes": "Conveyed pursuant to Last Will of Herbert H. Jessen."
+    },
+    {
+      "grantee": "Edna B. Jessen",
+      "grantor": "Herbert H. Jessen",
+      "book": "114",
+      "page": "055",
+      "recorded_date": "12/20/1956",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$10.00",
+      "notes": "Sewer line easement reserved to grantor."
+    },
+    {
+      "grantee": "Edna B. Jessen",
+      "grantor": "H.H. Jessen",
+      "book": "108",
+      "page": "155",
+      "recorded_date": "4/24/1954",
+      "instrument_type": "Deed",
+      "parcel_id": "137-10-06-007",
+      "consideration": "$100.00",
+      "notes": "Sewer line easement reserved to grantor."
+    }
+  ]
+}

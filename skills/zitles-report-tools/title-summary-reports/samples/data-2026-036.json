@@ -1,0 +1,146 @@
+{
+  "order_number": "2026-036",
+  "search_type": "COMMERCIAL",
+  "search_start_date": "4/1/1954",
+  "search_end_date": "2/18/2026",
+  "generated_date": "February 20, 2026",
+  "property_address": "710 South Main Street",
+  "city": "Summerville",
+  "state": "SC",
+  "zip_code": "",
+  "county": "Dorchester",
+  "parcel_id": "1371006007000",
+  "owners": "710 South Main Street LLC (see also William K Turner)",
+  "vesting_deed": {
+    "date": "2/18/2026",
+    "book": "16410",
+    "page": "281",
+    "legal_description": "Plat of a lot containing 753 acres (See Plat E 303). Written date of deed is July 10, 2025.",
+    "owners": "",
+    "reference": ""
+  },
+  "estates_notes": "",
+  "tax_info": {
+    "pending_tax_sale": false,
+    "delinquent": false,
+    "roll_back": false,
+    "exempt": false,
+    "years": [
+      {
+        "year": "2025",
+        "status": "PAID",
+        "amount": "$29,586.45"
+      },
+      {
+        "year": "2024",
+        "status": "PAID",
+        "amount": "$20,459.04"
+      }
+    ]
+  },
+  "mortgages": [
+    {
+      "lender": "Calcon Mutual Mortgage",
+      "amount": "$1,694,000",
+      "date": "2/18/2026",
+      "book": "16410",
+      "page": "269",
+      "notes": "Written date of mortgage is 7/10/2025.",
+      "assignments": []
+    }
+  ],
+  "judgments": [],
+  "liens": [
+    {
+      "type": "State (x3)",
+      "holder": "Christopher Grant",
+      "amount": "$2,838.13",
+      "date": "9/10/2021 — 7/7/2025",
+      "book": "",
+      "page": "",
+      "notes": "3 state liens across Books 896241, 1414620, 1489406."
+    },
+    {
+      "type": "State (x18)",
+      "holder": "Willie / William Turner",
+      "amount": "$23,044.41",
+      "date": "8/7/2020 — 2/6/2026",
+      "book": "",
+      "page": "",
+      "notes": "18 state liens. See lien detail schedule."
+    }
+  ],
+  "ucc_filings": [],
+  "plat_references": [
+    {
+      "reference": "E / 349",
+      "most_recent": true
+    },
+    {
+      "reference": "E / 303",
+      "most_recent": false
+    },
+    {
+      "reference": "11 / 25",
+      "most_recent": false
+    }
+  ],
+  "restrictions": [],
+  "easements": [
+    {
+      "date": "12/20/1956",
+      "book": "N/A",
+      "page": "N/A",
+      "type": "Easement",
+      "holder": "Sewer line reservation",
+      "notes": "Grantor reserves easement to access sewer line.",
+      "reference": "N/A"
+    }
+  ],
+  "lien_details": [
+    { "lien_id": "896241", "date_filed": "9/10/2021", "party": "Christopher Grant", "amount": "$918.33" },
+    { "lien_id": "1414620", "date_filed": "7/7/2025", "party": "Christopher Grant", "amount": "$464.18" },
+    { "lien_id": "1489406", "date_filed": "12/31/2024", "party": "Chris Grant", "amount": "$1,455.62" },
+    { "lien_id": "228130", "date_filed": "8/7/2020", "party": "Willie Turner", "amount": "$555.27" },
+    { "lien_id": "228491", "date_filed": "8/7/2020", "party": "Willie Turner", "amount": "$1,205.11" },
+    { "lien_id": "231442", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$1,214.30" },
+    { "lien_id": "235265", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$1,214.30" },
+    { "lien_id": "236448", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$962.52" },
+    { "lien_id": "238779", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$962.52" },
+    { "lien_id": "243511", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$969.97" },
+    { "lien_id": "242131", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$969.97" },
+    { "lien_id": "245755", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$872.88" },
+    { "lien_id": "247898", "date_filed": "8/8/2020", "party": "Willie Turner", "amount": "$886.36" },
+    { "lien_id": "846078", "date_filed": "9/17/2022", "party": "Willie Turner", "amount": "$6,110.73" },
+    { "lien_id": "906487", "date_filed": "12/6/2022", "party": "Willie Turner", "amount": "$248.18" },
+    { "lien_id": "962644", "date_filed": "2/7/2023", "party": "Willie Turner", "amount": "$172.12" },
+    { "lien_id": "1213540", "date_filed": "3/13/2025", "party": "William Turner", "amount": "$520.72" },
+    { "lien_id": "1232310", "date_filed": "4/10/2025", "party": "William Turner", "amount": "$185.82" },
+    { "lien_id": "1253256", "date_filed": "7/16/2025", "party": "William Turner", "amount": "$1,997.88" },
+    { "lien_id": "1270497", "date_filed": "10/13/2025", "party": "William Turner", "amount": "$1,997.88" },
+    { "lien_id": "1286003", "date_filed": "2/6/2026", "party": "William Turner", "amount": "$1,997.88" }
+  ],
+  "analysis_items": [
+    {
+      "icon_type": "checkmark",
+      "text": "Title confirmed vested via Deed recorded in Book 16410 / 281 (2/18/2026). Written date of deed is 7/10/2025."
+    },
+    {
+      "icon_type": "checkmark",
+      "text": "All property taxes for current cycles confirmed as paid."
+    },
+    {
+      "icon_type": "info",
+      "text": "1 active mortgage identified (Calcon Mutual Mortgage, $1,694,000, recorded 2/18/2026). Written date of mortgage is 7/10/2025."
+    },
+    {
+      "icon_type": "warning",
+      "text": "21 state liens found against prior owners totaling $25,882.54. Christopher Grant (3 liens, $2,838.13) and Willie/William Turner (18 liens, $23,044.41)."
+    },
+    {
+      "icon_type": "info",
+      "text": "Most recent plat is E / 349. Additional plats at E / 303 and 11 / 25."
+    }
+  ],
+  "general_comments": "Date of mortgage is 7/10/2025 even though recorded date is 2/18/2026.\n\nPossible open liens against Christopher Grant and William Turner.\n\nMost recent plat is actually E / 349. Other plats include E / 303 and 11 / 25."
+}

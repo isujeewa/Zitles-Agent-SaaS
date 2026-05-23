@@ -1,0 +1,278 @@
+{
+  "order_number": "2026-040",
+  "search_type": "FULL",
+  "search_start_date": "10/19/1982",
+  "search_end_date": "2/17/2026",
+  "generated_date": "February 24, 2026",
+  "property_address": "305 Lakeside Drive",
+  "city": "Mount Pleasant",
+  "state": "SC",
+  "zip_code": "",
+  "county": "Charleston",
+  "parcel_id": "5350500061",
+  "owners": "JDT Industries",
+  "vesting_deed": {
+    "date": "12/1/2025",
+    "book": "1353",
+    "page": "422",
+    "legal_description": "Apt 3, Building C in Heritage Village Horizontal Property Regime (See Plat AC 154)",
+    "owners": "",
+    "reference": ""
+  },
+  "estates_notes": "",
+  "tax_info": {
+    "pending_tax_sale": false,
+    "delinquent": false,
+    "roll_back": false,
+    "exempt": false,
+    "years": [
+      {
+        "year": "2025",
+        "status": "PAID",
+        "amount": "$1,040.06"
+      },
+      {
+        "year": "2024",
+        "status": "PAID",
+        "amount": "$940.85"
+      }
+    ]
+  },
+  "mortgages": [
+    {
+      "lender": "Wells Fargo",
+      "amount": "$165,770",
+      "date": "3/24/2015",
+      "book": "0015",
+      "page": "846",
+      "notes": "",
+      "assignments": [
+        {
+          "date": "N/A",
+          "book": "0464",
+          "page": "497",
+          "assignee": "Wells Fargo",
+          "notes": "MTG Modification"
+        }
+      ]
+    }
+  ],
+  "judgments": [
+    {
+      "parties": "Heritage Village HPR v. Darcy Thompson",
+      "amount": "$43,252.68",
+      "case_number": "2023CP10-573",
+      "book": "",
+      "page": "",
+      "notes": "Foreclosure action for unpaid HOA assessments stemming from 2011 to present."
+    },
+    {
+      "parties": "Wells Fargo Bank v. Darcy Thompson, JDT Industries",
+      "amount": "$227,451.65",
+      "case_number": "2025CP10-1008",
+      "book": "",
+      "page": "",
+      "notes": "Foreclosure action by lender. Still ongoing and has not gone to master's sale."
+    },
+    {
+      "parties": "Heritage Village HPR v. Darcy Thompson",
+      "amount": "$5,052.34",
+      "case_number": "2012CP10-3587",
+      "book": "",
+      "page": "",
+      "notes": ""
+    }
+  ],
+  "liens": [
+    {
+      "type": "HOA",
+      "holder": "Heritage Village HPR",
+      "amount": "$2,176.30",
+      "date": "5/27/2011",
+      "book": "0189",
+      "page": "528",
+      "notes": "Satisfied from foreclosure - See 1353 / 423. See also 2023CP10-573 for calculation of current amount owed of $43,252.68."
+    },
+    {
+      "type": "State",
+      "holder": "Darcy Thompson",
+      "amount": "$5,638.48",
+      "date": "2/21/2025",
+      "book": "1257703",
+      "page": "N/A",
+      "notes": ""
+    }
+  ],
+  "ucc_filings": [],
+  "plat_references": [
+    {
+      "reference": "AC 154",
+      "most_recent": true
+    }
+  ],
+  "restrictions": [
+    {
+      "date": "4/11/2025",
+      "book": "1306",
+      "page": "609",
+      "description": "Approval of Sales",
+      "party": "",
+      "reference": "1306 / 609"
+    },
+    {
+      "date": "10/8/2024",
+      "book": "1272",
+      "page": "226",
+      "description": "Heritage Village Rules & Regulations",
+      "party": "",
+      "reference": "1272 / 226"
+    },
+    {
+      "date": "10/25/2022",
+      "book": "1145",
+      "page": "300",
+      "description": "Heritage Village Rules & Regulations",
+      "party": "",
+      "reference": "1145 / 300 (re-record of 1128 / 896)"
+    },
+    {
+      "date": "1/8/2019",
+      "book": "0771",
+      "page": "033",
+      "description": "Heritage Village Rules & Regulations",
+      "party": "",
+      "reference": "0771 / 033"
+    },
+    {
+      "date": "3/8/1974",
+      "book": "X103",
+      "page": "234",
+      "description": "Restrictions & Bylaws for Heritage Village Horizontal Property Regime",
+      "party": "",
+      "reference": "X103 / 234"
+    },
+    {
+      "date": "5/8/2025",
+      "book": "1311",
+      "page": "882",
+      "description": "Memo Agreement - Restoration Homes Acquisitions",
+      "party": "",
+      "reference": "1311 / 882"
+    }
+  ],
+  "easements": [
+    {
+      "date": "1/10/2006",
+      "book": "Z568",
+      "page": "846",
+      "type": "Easement",
+      "holder": "SCE&G",
+      "notes": "",
+      "reference": "Z568 / 846"
+    },
+    {
+      "date": "4/22/2004",
+      "book": "T491",
+      "page": "656",
+      "type": "Easement",
+      "holder": "Mt. Pleasant Waterworks",
+      "notes": "",
+      "reference": "T491 / 656"
+    },
+    {
+      "date": "5/11/2001",
+      "book": "J371",
+      "page": "550",
+      "type": "Easement",
+      "holder": "Bellsouth",
+      "notes": "",
+      "reference": "J371 / 550"
+    },
+    {
+      "date": "9/21/1998",
+      "book": "D311",
+      "page": "425",
+      "type": "Easement",
+      "holder": "Mt Pleasant Assisted Living Retirement Community",
+      "notes": "",
+      "reference": "D311 / 425"
+    },
+    {
+      "date": "4/28/1998",
+      "book": "U301",
+      "page": "794",
+      "type": "Easement",
+      "holder": "Mt. Pleasant Waterworks",
+      "notes": "",
+      "reference": "U301 / 794"
+    },
+    {
+      "date": "4/16/1997",
+      "book": "S282",
+      "page": "249",
+      "type": "Easement",
+      "holder": "Mt. Pleasant Waterworks",
+      "notes": "",
+      "reference": "S282 / 249"
+    },
+    {
+      "date": "9/2/1974",
+      "book": "B104",
+      "page": "147",
+      "type": "Easement",
+      "holder": "Town of Mt. Pleasant",
+      "notes": "",
+      "reference": "B104 / 147"
+    },
+    {
+      "date": "9/19/1973",
+      "book": "W102",
+      "page": "370",
+      "type": "Easement",
+      "holder": "Mt. Pleasant Water & Sewer Commission",
+      "notes": "",
+      "reference": "W102 / 370"
+    },
+    {
+      "date": "3/12/1973",
+      "book": "J101",
+      "page": "157",
+      "type": "Easement",
+      "holder": "SCE&G",
+      "notes": "",
+      "reference": "J101 / 157"
+    }
+  ],
+  "lien_details": [],
+  "analysis_items": [
+    {
+      "icon_type": "checkmark",
+      "text": "Title confirmed vested via Deed recorded in Book 1353 / 422 (12/1/2025)."
+    },
+    {
+      "icon_type": "checkmark",
+      "text": "All property taxes for current cycles confirmed as paid."
+    },
+    {
+      "icon_type": "info",
+      "text": "1 active mortgage identified against the property (Wells Fargo, $165,770, recorded 3/24/2015)."
+    },
+    {
+      "icon_type": "warning",
+      "text": "3 judgments found. Active lender foreclosure (2025CP10-1008) by Wells Fargo for $227,451.65 — still ongoing, has not gone to master's sale."
+    },
+    {
+      "icon_type": "warning",
+      "text": "HOA lien of $2,176.30 originally recorded 5/27/2011 (Book 0189 / 528). Current amount owed calculated at $43,252.68 per case 2023CP10-573."
+    },
+    {
+      "icon_type": "warning",
+      "text": "Open state lien against prior owner Darcy Thompson for $5,638.48 (recorded 2/21/2025, Book 1257703)."
+    },
+    {
+      "icon_type": "info",
+      "text": "Property subject to Heritage Village HPR Master Covenants (X103 / 234). 6 restrictions and 9 easements identified."
+    }
+  ],
+  "general_comments": "Property is subject to Master Covenants X103 / 234.\n\nHOA has foreclosed on property. Ongoing pending foreclosure action has since been initiated by the lender, Wells Fargo. Current owner successfully petitioned to be joined as party to that action upon purchasing property at master's sale.\n\nOpen state lien against prior owner, Darcy Thompson."
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+<div class="appendix-body">
+
+{% macro icon_lock() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<rect x="2.5" y="7" width="11" height="7.5" rx="1.5"/>
+<path d="M5 7V5c0-1.7 1.3-3 3-3s3 1.3 3 3v2" fill="none" stroke="#2563EB" stroke-width="1.8"/>
+<circle cx="8" cy="10.5" r="1.2" fill="#EFF6FF"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_lightning() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M9 0.5L3.5 9H7.5L5.5 15.5L12.5 7H8.5L9 0.5z"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_map() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M8 0.5C5.5 0.5 3.5 2.5 3.5 5c0 3.5 4.5 8 4.5 8s4.5-4.5 4.5-8c0-2.5-2-4.5-4.5-4.5zm0 6.2c-1 0-1.7-.7-1.7-1.7S7 3.3 8 3.3s1.7.8 1.7 1.7S9 6.7 8 6.7z"/>
+<path d="M2 10.5l3 1v4l-3-1v-4zm4.5 1l3-1v4l-3 1v-4zm4.5-1l3-1v4l-3 1v-4z" opacity="0.3"/>
+</svg>
+{% endmacro %}
+
+<!-- ======== APPENDIX HEADER ======== -->
+<div class="appendix-header">
+    <div class="appendix-header-left">
+        {% if logo_data %}
+        <img src="data:image/png;base64,{{ logo_data }}" class="logo-img" alt="Zitles">
+        {% else %}
+        <span class="brand-name">Zitles</span>
+        {% endif %}
+    </div>
+    <div class="appendix-header-right">
+        <span class="appendix-title">Restrictions, Easements &amp; Plats</span>
+    </div>
+</div>
+
+<!-- ======== RESTRICTIONS ======== -->
+{% if data.restrictions %}
+<div class="appendix-section">
+    <div class="appendix-section-title">
+        <span class="section-icon">{{ icon_lock() }}</span>
+        Restrictions &amp; Covenants
+    </div>
+    <table class="appendix-table appendix-table-desc" style="width:100%;">
+        <thead>
+            <tr>
+                <th style="width:74px;">Book / Page</th>
+                <th style="width:74px;">Recorded</th>
+                <th>Description / Party</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in data.restrictions %}
+            <tr>
+                <td>{{ r.book }} / {{ r.page }}</td>
+                <td>{{ r.date }}</td>
+                <td style="white-space:normal;word-wrap:break-word;">{{ r.description }}{% if r.party %}<br>{{ r.party }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- ======== EASEMENTS ======== -->
+{% if data.easements %}
+<div class="appendix-section"{% if (data.restrictions | length > 3) or (data.easements | length > 3) %} style="page-break-before: always;"{% endif %}>
+    <div class="appendix-section-title">
+        <span class="section-icon">{{ icon_lightning() }}</span>
+        Easements &amp; Utilities
+    </div>
+    <table class="appendix-table appendix-table-desc" style="width:100%;">
+        <thead>
+            <tr>
+                <th style="width:74px;">Book / Page</th>
+                <th style="width:74px;">Recorded</th>
+                <th>Holder / Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for e in data.easements %}
+            <tr>
+                <td>{{ e.book }} / {{ e.page }}</td>
+                <td>{{ e.date }}</td>
+                <td style="white-space:normal;word-wrap:break-word;">{{ e.holder }}{% if e.notes %}<br>{{ e.notes }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{# legacy two-column easement layout removed in favor of full-width #}
+{% if false %}
+<div>
+    <div class="appendix-columns">
+        <div class="appendix-col">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:74px;">Book / Page</th>
+                        <th style="width:74px;">Recorded</th>
+                        <th>Holder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for e in data.easements[emid:] %}
+                    <tr>
+                        <td>{{ e.book }} / {{ e.page }}</td>
+                        <td>{{ e.date }}</td>
+                        <td style="white-space:normal;word-wrap:break-word;">{{ e.holder }}{% if e.notes %}<br>{{ e.notes }}{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ======== LEASES ======== -->
+{% if data.leases %}
+<div class="appendix-section">
+    <div class="appendix-section-title">
+        <span class="section-icon">{{ icon_lock() }}</span>
+        Leases &amp; Lease Assignments
+    </div>
+    <table class="appendix-table appendix-table-desc" style="width:100%;">
+        <thead>
+            <tr>
+                <th style="width:74px;">Book / Page</th>
+                <th style="width:74px;">Recorded</th>
+                <th>Lessee</th>
+                <th>Term</th>
+                <th>Rent</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for l in data.leases %}
+            <tr>
+                <td>{{ l.book }} / {{ l.page }}</td>
+                <td>{{ l.date }}</td>
+                <td style="white-space:normal;word-wrap:break-word;">{{ l.lessee }}</td>
+                <td style="white-space:normal;word-wrap:break-word;">{{ l.term }}</td>
+                <td>{{ l.rent }}</td>
+                <td style="white-space:normal;word-wrap:break-word;">{{ l.notes }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+</div>
+</body>
+</html>

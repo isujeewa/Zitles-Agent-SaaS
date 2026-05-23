@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+
+<!-- ======== HEADER ======== -->
+<div class="header-bar">
+    <div class="header-left">
+        {% if logo_data %}
+        <img src="data:image/png;base64,{{ logo_data }}" class="logo-img" alt="Zitles">
+        {% else %}
+        <span style="font-size:23.5pt;font-weight:700;color:#1B2A4A;">Zitles</span>
+        {% endif %}
+    </div>
+    <div class="header-right">
+        <div class="parcel-label">Parcel Identification</div>
+        <div class="parcel-number">{{ data.parcel_id }}</div>
+    </div>
+</div>
+
+<!-- ======== TITLE ======== -->
+<div class="title-line">
+    <span class="title-text">Chain of Title</span>
+</div>
+<div class="generated-date">Generated: {{ data.generated_date }}</div>
+
+<!-- ======== PROPERTY BAR ======== -->
+<div class="property-bar">
+    <div class="property-bar-left">
+        <div class="property-address">{{ data.property_address }}</div>
+        <div class="property-detail">
+            {{ data.city }}{% if data.state %}, {{ data.state }}{% endif %}{% if data.zip_code %} {{ data.zip_code }}{% endif %}
+            &nbsp;&bull;&nbsp; {{ data.county }} County
+        </div>
+        {% if data.legal_description %}
+        <div class="legal-line">{{ data.legal_description }}</div>
+        {% endif %}
+    </div>
+    <div class="property-bar-right">
+        <div class="search-label">Chain Links</div>
+        {% set branch_count = [] %}{% for b in data.branches %}{% for c in b.chain %}{% set _ = branch_count.append(1) %}{% endfor %}{% endfor %}
+        <div class="search-window">{{ data.chain | length + branch_count | length }} Conveyances</div>
+    </div>
+</div>
+
+{% set letters = ['A','B','C','D','E','F','G','H'] %}
+{% set top_branches = [] %}
+{% set column_branches = [] %}
+{% set footer_branches = [] %}
+{% for branch in data.branches %}
+    {% if 'current' in branch.label.lower() %}
+        {% set _ = top_branches.append(branch) %}
+    {% elif 'root' in branch.label.lower() %}
+        {% set _ = footer_branches.append(branch) %}
+    {% else %}
+        {% set _ = column_branches.append(branch) %}
+    {% endif %}
+{% endfor %}
+
+{% if top_branches %}
+<!-- ======== CURRENT OWNERS (SIDE BY SIDE, ABOVE MAIN CHAIN) ======== -->
+<div class="chain-container">
+<div class="branch-columns" style="margin-bottom:0;">
+{% for branch in top_branches %}
+{% set branch_letter = letters[loop.index0] %}
+<div class="branch-float-col" style="width:{{ (100 / top_branches|length) - 1 }}%;">
+    <div class="branch-col-header" style="background:#ECFDF5;border-left:4px solid #16A34A;color:#16A34A;">
+        <span class="branch-badge-sm" style="background:#16A34A;">1{{ branch_letter }}</span>
+        {{ branch.label }}
+    </div>
+    {% for link in branch.chain %}
+    <div class="branch-card-group">
+        <div class="branch-card" style="border-left:4px solid #16A34A;">
+            <div class="branch-card-label">Grantee</div>
+            <div class="branch-card-grantee">{{ link.grantee }}</div>
+            <div class="branch-card-label">Grantor</div>
+            <div class="branch-card-grantor">{{ link.grantor }}</div>
+            <span class="branch-card-instrument">{{ link.instrument_type }}</span>
+            <div class="branch-card-ref">Bk {{ link.book }} / Pg {{ link.page }}</div>
+            <div class="branch-card-date">{{ link.recorded_date }}</div>
+            {% if link.consideration %}
+            <div class="branch-card-consideration">{{ link.consideration }}</div>
+            {% endif %}
+            <div class="branch-card-parcel">TMS {{ link.parcel_id }}</div>
+            {% if link.notes %}
+            <div class="branch-card-notes">{{ link.notes }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+<div style="clear:both;"></div>
+</div>
+<div class="chain-connector"></div>
+<div class="chain-arrow"></div>
+</div>
+{% endif %}
+
+<!-- ======== CHAIN FLOWCHART ======== -->
+<div class="chain-container">
+    {% for link in data.chain %}
+    {% set is_first = loop.first and not top_branches %}
+    {% set is_foreclosure = 'foreclosure' in link.instrument_type.lower() or 'master' in link.instrument_type.lower() %}
+
+    <div class="chain-link-group">
+        <div class="chain-link{% if is_first %} current{% endif %}{% if is_foreclosure %} foreclosure{% endif %}">
+            <div class="link-col-left">
+                <div class="link-label">
+                    <span class="step-badge"{% if is_first %} style="background:#16A34A;"{% endif %}>{{ loop.index + (top_branches | length if top_branches else 0) }}</span>
+                    Grantee{% if is_first %}<span class="current-tag">Current Owner</span>{% endif %}
+                </div>
+                <div class="link-grantee">{{ link.grantee }}</div>
+                <div class="link-label" style="margin-top:4px;">Grantor</div>
+                <div class="link-grantor">{{ link.grantor }}</div>
+                <span class="link-instrument">{{ link.instrument_type }}</span>
+                {% if link.notes %}
+                <div class="link-notes">{{ link.notes }}</div>
+                {% endif %}
+            </div>
+            <div class="link-col-right">
+                <div class="link-label">Book / Page</div>
+                <div class="link-ref">{{ link.book }} / {{ link.page }}</div>
+                <div class="link-label" style="margin-top:4px;">Recorded</div>
+                <div class="link-date">{{ link.recorded_date }}</div>
+                {% if link.consideration %}
+                <div class="link-consideration">{{ link.consideration }}</div>
+                {% endif %}
+                <div class="link-parcel">TMS {{ link.parcel_id }}</div>
+            </div>
+        </div>
+
+        {% if not loop.last %}
+        <div class="chain-connector"></div>
+        <div class="chain-arrow"></div>
+        {% endif %}
+    </div>
+
+    {% endfor %}
+</div>
+
+{% if column_branches %}
+<!-- ======== BRANCH SECTIONS (SIDE BY SIDE) ======== -->
+{% if data.chain %}
+<div class="branch-split-bar">
+    <div class="branch-split-label">Chain Splits</div>
+</div>
+{% endif %}
+
+{% if column_branches %}
+<div class="branch-columns">
+{% for branch in column_branches %}
+{% set branch_letter = letters[loop.index0] %}
+{% set is_alt = (loop.index0 == 0) %}
+{% set bc = '#2563EB' if is_alt else '#7C3AED' %}
+{% set bc_bg = '#EFF6FF' if is_alt else '#F5F3FF' %}
+{% set bc_border = '#93B4F1' if is_alt else '#C4B5FD' %}
+<div class="branch-float-col" style="width:{{ (100 / column_branches|length) - 1 }}%;">
+    <div class="branch-col-header" style="color:{{ bc }};border-bottom-color:{{ bc }};">
+        <span class="branch-badge-sm" style="background:{{ bc }};">{{ branch_letter }}</span>
+        {{ branch.label }}
+    </div>
+    {% for link in branch.chain %}
+    {% set is_foreclosure = 'foreclosure' in link.instrument_type.lower() %}
+    <div class="branch-card-group">
+        <div class="branch-card" style="border-left-color:{{ bc }};border-color:{{ bc_border }};">
+            <div class="branch-card-step">
+                <span class="branch-step-badge" style="background:{{ bc }};">{{ branch_letter }}{{ loop.index }}</span>
+            </div>
+            <div class="branch-card-label">Grantee</div>
+            <div class="branch-card-grantee">{{ link.grantee }}</div>
+            <div class="branch-card-label">Grantor</div>
+            <div class="branch-card-grantor">{{ link.grantor }}</div>
+            <span class="branch-card-instrument" style="background:{{ bc_bg }};color:{{ bc }};">{{ link.instrument_type }}</span>
+            {% if link.book %}
+            <div class="branch-card-ref">Bk {{ link.book }} / Pg {{ link.page }}</div>
+            {% endif %}
+            <div class="branch-card-date">{{ link.recorded_date }}</div>
+            {% if link.consideration %}
+            <div class="branch-card-consideration">{{ link.consideration }}</div>
+            {% endif %}
+            {% if link.parcel_id %}
+            <div class="branch-card-parcel">TMS {{ link.parcel_id }}</div>
+            {% endif %}
+            {% if link.notes %}
+            <div class="branch-card-notes">{{ link.notes | safe }}</div>
+            {% endif %}
+        </div>
+        {% if not loop.last %}
+        <div class="branch-connector" style="background:{{ bc }};"></div>
+        <div class="branch-arrow-sm" style="border-top-color:{{ bc }};"></div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+<div style="clear:both;"></div>
+</div>
+{% endif %}
+{% endif %}
+
+{% if footer_branches %}
+{% for branch in footer_branches %}
+<!-- Full-width root/footer branch -->
+<div style="margin-top:16px;">
+    <div class="branch-split-bar" style="background:#f3f0ff;border-left:4px solid #7C3AED;">
+        <div class="branch-split-label" style="color:#7C3AED;">{{ branch.label }}</div>
+    </div>
+    <div class="chain-container">
+    {% for link in branch.chain %}
+    {% set is_foreclosure = 'foreclosure' in link.instrument_type.lower() or 'master' in link.instrument_type.lower() %}
+    <div class="chain-link-group">
+        <div class="chain-link{% if is_foreclosure %} foreclosure{% endif %}" style="{% if not is_foreclosure %}border-left:4px solid #7C3AED;{% endif %}">
+            <div class="link-col-left">
+                <div class="link-label">
+                    <span class="step-badge" style="{% if not is_foreclosure %}background:#7C3AED;{% endif %}">{{ loop.index }}</span>
+                    Grantee
+                </div>
+                <div class="link-grantee">{{ link.grantee }}</div>
+                <div class="link-label" style="margin-top:4px;">Grantor</div>
+                <div class="link-grantor">{{ link.grantor }}</div>
+                <span class="link-instrument" style="{% if not is_foreclosure %}background:#F5F3FF;color:#7C3AED;{% endif %}">{{ link.instrument_type }}</span>
+                {% if link.notes %}
+                <div class="link-notes">{{ link.notes }}</div>
+                {% endif %}
+            </div>
+            <div class="link-col-right">
+                <div class="link-label">Book / Page</div>
+                <div class="link-ref">{{ link.book }} / {{ link.page }}</div>
+                <div class="link-label" style="margin-top:4px;">Recorded</div>
+                <div class="link-date">{{ link.recorded_date }}</div>
+                {% if link.consideration %}
+                <div class="link-consideration">{{ link.consideration }}</div>
+                {% endif %}
+                {% if link.parcel_id %}
+                <div class="link-parcel">TMS {{ link.parcel_id }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% if not loop.last %}
+        <div class="chain-connector" style="background:#7C3AED;"></div>
+        <div class="chain-arrow" style="border-top-color:#7C3AED;"></div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if data.footnotes %}
+<!-- ======== FOOTNOTES ======== -->
+<div class="footnotes-section">
+    {% for note in data.footnotes %}
+    <div class="footnote-item">
+        <span class="footnote-marker">{{ loop.index }}</span>
+        <span class="footnote-text">{{ note }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if data.appendices %}
+<!-- ======== APPENDICES ======== -->
+{% for appendix in data.appendices %}
+<div class="appendix-section">
+    <div class="appendix-header">
+        <span class="appendix-badge">{{ loop.index }}</span>
+        {{ appendix.label }}
+    </div>
+    <table class="appendix-table">
+        <thead>
+            <tr>
+                <th class="appendix-th" style="width:8%;">#</th>
+                <th class="appendix-th" style="width:18%;">Book / Page</th>
+                <th class="appendix-th">Grantor(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in appendix.items %}
+            <tr>
+                <td class="appendix-td appendix-td-num">{{ loop.index }}</td>
+                <td class="appendix-td appendix-td-ref">{{ item.book }} / {{ item.page }}</td>
+                <td class="appendix-td appendix-td-grantor">{{ item.grantor }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+{% endif %}
+
+</body>
+</html>

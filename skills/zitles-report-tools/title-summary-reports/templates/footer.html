@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { margin: 0; padding: 0; }
+.footer-bar {
+    width: 100%;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 7pt;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 12mm;
+    overflow: hidden;
+}
+.footer-left { float: left; }
+.footer-right { float: right; }
+</style>
+</head>
+<body>
+<div class="footer-bar">
+    <span class="footer-left">REF: {{ property_ref }}</span>
+    <span class="footer-right">PAGE <span class="page"></span> OF <span class="topage"></span></span>
+</div>
+<script>
+    var vars = {};
+    var query = document.location.search.substring(1).split('&');
+    for (var i = 0; i < query.length; i++) {
+        var pair = query[i].split('=', 2);
+        vars[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    var els = document.getElementsByClassName('page');
+    for (var j = 0; j < els.length; j++) els[j].textContent = vars['page'] || '';
+    var tels = document.getElementsByClassName('topage');
+    for (var k = 0; k < tels.length; k++) tels[k].textContent = vars['topage'] || '';
+</script>
+</body>
+</html>

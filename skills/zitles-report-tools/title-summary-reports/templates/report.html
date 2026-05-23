@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+
+<!-- ======== SVG ICON DEFINITIONS ======== -->
+{% macro icon_people() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<circle cx="5.5" cy="3.5" r="2.3"/><path d="M0.5 12.5c0-2.5 2.2-4 5-4s5 1.5 5 4v1h-10v-1z"/>
+<circle cx="11.5" cy="4" r="1.8"/><path d="M9 12.5c0-2 1.8-3.3 4-3.5 1.5.2 2.5 1.3 2.5 3v1.5H9v-1z" opacity="0.6"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_dollar() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<circle cx="8" cy="8" r="7" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+<text x="8" y="11.5" text-anchor="middle" font-size="10" font-weight="bold" font-family="Helvetica" fill="#2563EB">$</text>
+</svg>
+{% endmacro %}
+
+{% macro icon_check() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M6.5 12L2 7.5l1.5-1.5L6.5 9 12.5 3 14 4.5 6.5 12z"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_bank() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M8 0.5L0.5 5h15L8 0.5z"/><rect x="1.5" y="6" width="2" height="6"/><rect x="5" y="6" width="2" height="6"/>
+<rect x="9" y="6" width="2" height="6"/><rect x="12.5" y="6" width="2" height="6"/><rect x="0.5" y="12.5" width="15" height="2" rx="0.5"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_document() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M3 1h7l3 3v10.5c0 .3-.2.5-.5.5h-9c-.3 0-.5-.2-.5-.5V1.5c0-.3.2-.5.5-.5z"/>
+<path d="M10 1v3h3" fill="none" stroke="#EFF6FF" stroke-width="0.8"/>
+<line x1="5" y1="6.5" x2="11" y2="6.5" stroke="#EFF6FF" stroke-width="0.8"/>
+<line x1="5" y1="8.5" x2="11" y2="8.5" stroke="#EFF6FF" stroke-width="0.8"/>
+<line x1="5" y1="10.5" x2="9" y2="10.5" stroke="#EFF6FF" stroke-width="0.8"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_gavel() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<rect x="1" y="13" width="10" height="2" rx="0.5"/>
+<path d="M4 5l2-2 7 7-2 2-7-7z"/>
+<path d="M9 1.5l3 3-1.5 1.5-3-3L9 1.5z"/>
+<path d="M2.5 8l3 3-1.5 1.5-3-3L2.5 8z"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_map() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M8 0.5C5.5 0.5 3.5 2.5 3.5 5c0 3.5 4.5 8 4.5 8s4.5-4.5 4.5-8c0-2.5-2-4.5-4.5-4.5zm0 6.2c-1 0-1.7-.7-1.7-1.7S7 3.3 8 3.3s1.7.8 1.7 1.7S9 6.7 8 6.7z"/>
+<path d="M2 10.5l3 1v4l-3-1v-4zm4.5 1l3-1v4l-3 1v-4zm4.5-1l3-1v4l-3 1v-4z" opacity="0.3"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_house() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_lock() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<rect x="2.5" y="7" width="11" height="7.5" rx="1.5"/>
+<path d="M5 7V5c0-1.7 1.3-3 3-3s3 1.3 3 3v2" fill="none" stroke="#2563EB" stroke-width="1.8"/>
+<circle cx="8" cy="10.5" r="1.2" fill="#EFF6FF"/>
+</svg>
+{% endmacro %}
+
+{% macro icon_lightning() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<path d="M9 0.5L3.5 9H7.5L5.5 15.5L12.5 7H8.5L9 0.5z"/>
+</svg>
+{% endmacro %}
+
+<!-- ======== HEADER ======== -->
+<div class="header-bar">
+    <div class="header-left">
+        {% if logo_data %}
+        <img src="data:image/png;base64,{{ logo_data }}" class="logo-img" alt="Zitles">
+        {% else %}
+        <span class="brand-name">Zitles</span>
+        {% endif %}
+    </div>
+    <div class="header-right">
+        <div class="parcel-label">Parcel Identification</div>
+        <div class="parcel-number">{{ data.parcel_id }}</div>
+    </div>
+</div>
+
+<!-- ======== TITLE LINE ======== -->
+<div class="title-line">
+    <span class="title-text">{{ report_title or 'Title Summary Report' }}</span>
+</div>
+<div class="generated-date">Generated: {{ data.generated_date }}</div>
+
+<!-- ======== PROPERTY BAR ======== -->
+<div class="property-bar">
+    <div class="property-bar-left">
+        <div>
+            <span class="property-icon">{{ icon_house() }}</span>
+            <span class="property-address">{{ data.property_address }}</span>
+        </div>
+        <div class="property-detail">
+            {{ data.city }}{% if data.state %}, {{ data.state }}{% endif %}{% if data.zip_code %} {{ data.zip_code }}{% endif %}
+            &nbsp;&bull;&nbsp; {{ data.county }} County
+        </div>
+    </div>
+    <div class="property-bar-right">
+        <div class="search-label">Search Window</div>
+        <div class="search-window">{{ data.search_window }}</div>
+    </div>
+</div>
+
+<!-- ======== TWO-COLUMN CONTENT ======== -->
+<div class="columns">
+
+    <!-- ---- LEFT COLUMN ---- -->
+    <div class="col-left">
+
+        <!-- OWNERSHIP & VESTING -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_people() }}</span>
+                Ownership &amp; Vesting
+            </div>
+            {% if data.owners %}
+            <div class="field-label">Owners of Record</div>
+            <div class="field-value">{{ data.owners }}</div>
+            {% endif %}
+            {% if data.vesting_deeds %}
+            {% for vd in data.vesting_deeds %}
+            {% if not loop.first %}<div style="border-top:1px solid #E2E8F0;margin:6px 0;"></div>{% endif %}
+            <div class="field-row">
+                <div class="field-half">
+                    <div class="field-label">Vesting Date</div>
+                    <div class="field-value small">{{ vd.date }}</div>
+                </div>
+                <div class="field-half">
+                    <div class="field-label">Reference</div>
+                    <div class="field-value small">Book {{ vd.book }} / {{ vd.page }}</div>
+                </div>
+            </div>
+            {% if vd.reference %}
+            <div class="legal-desc">{{ vd.reference }}</div>
+            {% endif %}
+            {% if vd.legal_description %}
+            <div class="legal-desc">Legal: {{ vd.legal_description }}</div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if not data.owners and not data.vesting_deeds %}
+            <div class="no-data">No Data Found</div>
+            {% endif %}
+        </div>
+
+        <!-- TAX ASSESSMENT -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_dollar() }}</span>
+                Tax Assessment
+            </div>
+            {% if data.tax_info and data.tax_info.years %}
+            <table class="tax-table">
+                <thead>
+                    <tr>
+                        <th>Tax Year</th>
+                        <th>Status</th>
+                        <th style="text-align:right">Amount Due</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for year in data.tax_info.years %}
+                    <tr>
+                        <td>{{ year.year }}</td>
+                        <td>
+                            {% if year.status.upper().startswith("PAID") %}
+                            <span class="badge-paid">{{ year.status }}</span>
+                            {% else %}
+                            <span class="badge-unpaid">{{ year.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align:right">{{ year.amount }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">No Data Found</div>
+            {% endif %}
+        </div>
+
+        <!-- ANALYSIS SUMMARY (placed in left column under Tax Assessment) -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_check() }}</span>
+                Analysis Summary
+            </div>
+            {% if data.analysis_items %}
+            {% for item in data.analysis_items %}
+            <div class="analysis-item">
+                <span class="analysis-icon {{ item.icon_type }}">
+                    {% if item.icon_type == "checkmark" %}&#10003;{% elif item.icon_type == "info" %}&#8505;{% else %}!{% endif %}
+                </span>
+                {{ item.text }}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-data">No analysis items</div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- ---- RIGHT COLUMN ---- -->
+    <div class="col-right">
+
+        <!-- MORTGAGES -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_bank() }}</span>
+                Mortgages
+            </div>
+            {% if data.mortgages %}
+            {% for m in data.mortgages %}
+            <div class="mortgage-entry">
+                <div class="mortgage-header">
+                    <span class="mortgage-lender">{{ m.lender }}</span>
+                    <span class="mortgage-amount">{{ m.amount }}</span>
+                </div>
+                <div class="mortgage-detail">
+                    Recorded {{ m.date }} | Book {{ m.book }} / {{ m.page }}
+                </div>
+                {% if m.notes %}
+                <div class="mortgage-detail" style="font-style:italic;color:#64748B;font-size:8pt;">{{ m.notes | safe }}</div>
+                {% endif %}
+                {% if m.assignments %}
+                <div class="mortgage-assignments-header">Assignments:</div>
+                {% for a in m.assignments %}
+                <div class="mortgage-assignment">
+                    <span class="mortgage-assignment-num">{{ loop.index }}.</span>
+                    <strong class="mortgage-assignment-bp">Book {{ a.book }} / Page {{ a.page }}</strong>{% if a.date %} &mdash; {{ a.date }}{% endif %}{% if a.assignee %} &rarr; {{ a.assignee }}{% endif %}{% if a.notes %}<div class="mortgage-assignment-notes">{{ a.notes }}</div>{% endif %}
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-data">No Data Found</div>
+            {% endif %}
+        </div>
+
+        <!-- UCC FILINGS (only shown when data exists) -->
+        {% if data.ucc_filings %}
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_document() }}</span>
+                UCC Filings
+            </div>
+            {% for ucc in data.ucc_filings %}
+            <div class="ucc-entry">
+                <div class="ucc-title">UCC No. {{ ucc.filing_number }}{% if ucc.lender %} ({{ ucc.lender }}){% endif %}</div>
+                {% if ucc.address %}
+                <div class="ucc-detail">Parcel address: {{ ucc.address }}</div>
+                {% endif %}
+                {% if ucc.notes %}
+                <div class="ucc-detail">{{ ucc.notes }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- LIENS -->
+        {% if data.liens %}
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_lightning() }}</span>
+                Liens
+            </div>
+            {% for l in data.liens %}
+            <div class="lien-entry">
+                <div class="lien-title">{{ l.type }}{% if l.holder %} &mdash; {{ l.holder }}{% endif %}</div>
+                <div class="lien-detail">{{ l.date }}{% if l.book %} | Book {{ l.book }} / {{ l.page }}{% endif %} | {{ l.amount }}</div>
+                {% if l.notes %}<div class="lien-detail" style="font-style:italic;color:#64748B;">{{ l.notes }}</div>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- PLAT ARCHIVE (hidden when empty) -->
+        {% if data.plat_references %}
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">{{ icon_map() }}</span>
+                Plat Archive
+            </div>
+                {% for p in data.plat_references %}
+                    {% if p.most_recent %}
+                    <div class="plat-most-recent">
+                        {{ p.reference }} <span class="label-tag">(Most Recent)</span>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                {% set non_recent = [] %}
+                {% for p in data.plat_references %}
+                    {% if not p.most_recent %}
+                        {% set _ = non_recent.append(p) %}
+                    {% endif %}
+                {% endfor %}
+                {% set mid = (non_recent | length + 1) // 2 %}
+                <div class="plat-grid">
+                    <div class="plat-grid-col">
+                        <ul class="plat-list">
+                        {% for p in non_recent[:mid] %}
+                            <li>{{ p.reference }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="plat-grid-col">
+                        <ul class="plat-list">
+                        {% for p in non_recent[mid:] %}
+                            <li>{{ p.reference }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+        </div>
+        {% endif %}
+
+        <!-- Restrictions & Easements rendered on appendix page only -->
+
+    </div>
+</div>
+
+<!-- ======== PAGE 2: JUDGMENTS, RESTRICTIONS & EASEMENTS (full-width) ======== -->
+{% set has_jl = data.judgments or data.liens or data.lien_details %}
+{% set merge_re = has_jl and (data.restrictions or data.easements) %}
+{% if has_jl %}
+<div class="jl-page">
+
+    <!-- Header -->
+    <div class="appendix-header">
+        <div class="appendix-header-left">
+            {% if logo_data %}
+            <img src="data:image/png;base64,{{ logo_data }}" class="logo-img" alt="Zitles">
+            {% else %}
+            <span class="brand-name">Zitles</span>
+            {% endif %}
+        </div>
+        <div class="appendix-header-right">
+            <span class="appendix-title">{% if merge_re %}Judgments, Restrictions &amp; Easements{% else %}Judgments &amp; Liens{% endif %}</span>
+        </div>
+    </div>
+
+    <!-- JUDGMENTS -->
+    {% if data.judgments %}
+    <div class="jl-section">
+        <div class="appendix-section-title">
+            <span class="section-icon">{{ icon_gavel() }}</span>
+            Judgments
+        </div>
+        <table class="jl-table">
+            <thead>
+                <tr>
+                    <th>Parties</th>
+                    <th style="width:110px;">Case Number</th>
+                    <th style="width:90px;text-align:right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for j in data.judgments %}
+                <tr>
+                    <td>
+                        <div style="font-weight:600;color:#1B2A4A;">{{ j.parties }}</div>
+                        {% if j.notes %}<div style="font-style:italic;color:#64748B;font-size:9pt;margin-top:2px;">{{ j.notes }}</div>{% endif %}
+                    </td>
+                    <td>{{ j.case_number }}</td>
+                    <td style="text-align:right;font-weight:600;">{{ j.amount }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- LIENS -->
+    {% if data.liens %}
+    <div class="jl-section">
+        <div class="appendix-section-title">
+            <span class="section-icon">{{ icon_lightning() }}</span>
+            Liens
+        </div>
+        <table class="jl-table">
+            <thead>
+                <tr>
+                    <th>Type / Holder</th>
+                    <th style="width:140px;">Date</th>
+                    <th style="width:100px;">Book / Page</th>
+                    <th style="width:90px;text-align:right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for l in data.liens %}
+                <tr>
+                    <td>
+                        <div style="font-weight:600;color:#1B2A4A;">{{ l.type }}{% if l.holder %} &mdash; {{ l.holder }}{% endif %}</div>
+                        {% if l.notes %}<div style="font-style:italic;color:#64748B;font-size:9pt;margin-top:2px;">{{ l.notes }}</div>{% endif %}
+                    </td>
+                    <td>{{ l.date }}</td>
+                    <td>{% if l.book %}{{ l.book }} / {{ l.page }}{% else %}N/A{% endif %}</td>
+                    <td style="text-align:right;font-weight:600;">{{ l.amount }}</td>
+                </tr>
+            {% endfor %}
+            {% if liens_sum %}
+                <tr>
+                    <td colspan="3" style="border-top:2px solid #1B2A4A;font-weight:700;color:#1B2A4A;padding-top:8px;">Total ({{ data.liens | length }} lien{{ 's' if data.liens | length != 1 else '' }})</td>
+                    <td style="border-top:2px solid #1B2A4A;text-align:right;font-weight:700;color:#1B2A4A;padding-top:8px;">{{ liens_sum }}</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- RESTRICTIONS (inline when judgments exist) -->
+    {% if merge_re and data.restrictions %}
+    <div class="jl-section">
+        <div class="appendix-section-title">
+            <span class="section-icon">{{ icon_lock() }}</span>
+            Restrictions &amp; Covenants
+        </div>
+        <table class="jl-table">
+            <thead>
+                <tr>
+                    <th style="width:74px;">Book / Page</th>
+                    <th style="width:74px;">Recorded</th>
+                    <th>Description / Party</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for r in data.restrictions %}
+                <tr>
+                    <td>{{ r.book }} / {{ r.page }}</td>
+                    <td>{{ r.date }}</td>
+                    <td style="white-space:normal;word-wrap:break-word;">{{ r.description }}{% if r.party %}<br><em style="color:#64748B;">{{ r.party }}</em>{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- EASEMENTS (inline when judgments exist) -->
+    {% if merge_re and data.easements %}
+    <div class="jl-section">
+        <div class="appendix-section-title">
+            <span class="section-icon">{{ icon_lightning() }}</span>
+            Easements &amp; Utilities
+        </div>
+        <table class="jl-table">
+            <thead>
+                <tr>
+                    <th style="width:74px;">Book / Page</th>
+                    <th style="width:74px;">Recorded</th>
+                    <th>Holder / Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for e in data.easements %}
+                <tr>
+                    <td>{{ e.book }} / {{ e.page }}</td>
+                    <td>{{ e.date }}</td>
+                    <td style="white-space:normal;word-wrap:break-word;">{{ e.holder }}{% if e.notes %}<br><em style="color:#64748B;">{{ e.notes }}</em>{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- LIEN ABSTRACT -->
+    {% if data.lien_details %}
+    <div class="jl-section">
+        <div class="appendix-section-title">
+            <span class="section-icon">{{ icon_gavel() }}</span>
+            Lien Abstract &mdash; {{ data.owners }}
+        </div>
+        <table class="lien-detail-table">
+            <thead>
+                <tr>
+                    <th>Date Filed</th>
+                    <th>Lien ID</th>
+                    <th>Party</th>
+                    <th>Last 4 SSN</th>
+                    <th style="text-align:right">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for ld in data.lien_details %}
+                <tr{% if ld.flagged %} class="lien-flagged"{% endif %}>
+                    <td>{{ ld.date_filed }}{% if ld.flagged %} &#9888;{% endif %}</td>
+                    <td>{{ ld.lien_id }}</td>
+                    <td>{{ ld.party }}</td>
+                    <td>{{ ld.ssn_last4 or '' }}</td>
+                    <td style="text-align:right">{{ ld.amount }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="lien-total-bar">
+            <span>Total ({{ data.lien_details | length }} liens)</span>
+            <span style="float:right">{{ lien_total }}</span>
+        </div>
+        {% set flagged_count = data.lien_details | selectattr('flagged') | list | length %}
+        {% if flagged_count > 0 %}
+        <div class="lien-legend">
+            &#9888; <strong>{{ flagged_count }} liens filed before 02/25/2019</strong> (QCD recording date) &mdash; filed while party held ownership interest; may attach to property.
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+{% endif %}
+
+</body>
+</html>

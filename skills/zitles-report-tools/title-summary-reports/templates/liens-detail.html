@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+<div class="appendix-body">
+
+{% macro icon_gavel() %}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#2563EB">
+<rect x="1" y="13" width="10" height="2" rx="0.5"/>
+<path d="M4 5l2-2 7 7-2 2-7-7z"/>
+<path d="M9 1.5l3 3-1.5 1.5-3-3L9 1.5z"/>
+<path d="M2.5 8l3 3-1.5 1.5-3-3L2.5 8z"/>
+</svg>
+{% endmacro %}
+
+<!-- ======== LIENS DETAIL HEADER ======== -->
+<div class="appendix-header">
+    <div class="appendix-header-left">
+        {% if logo_data %}
+        <img src="data:image/png;base64,{{ logo_data }}" class="logo-img" alt="Zitles">
+        {% else %}
+        <span class="brand-name">Zitles</span>
+        {% endif %}
+    </div>
+    <div class="appendix-header-right">
+        <span class="appendix-title">Liens &amp; Judgments Detail</span>
+    </div>
+</div>
+
+<!-- ======== LIENS TABLE ======== -->
+<div class="appendix-section">
+    <div class="appendix-section-title">
+        <span class="section-icon">{{ icon_gavel() }}</span>
+        Lien Abstract &mdash; {{ data.owners }}
+    </div>
+    <div class="appendix-columns">
+        {% set mid = (data.lien_details | length + 1) // 2 %}
+        <div class="appendix-col">
+            <table class="lien-detail-table">
+                <thead>
+                    <tr>
+                        <th>Lien ID</th>
+                        <th>Date</th>
+                        <th>Party</th>
+                        <th style="text-align:right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ld in data.lien_details[:mid] %}
+                    <tr{% if ld.flagged %} class="lien-flagged"{% endif %}>
+                        <td>{{ ld.lien_id }}</td>
+                        <td>{{ ld.date_filed }}{% if ld.flagged %} &#9888;{% endif %}</td>
+                        <td>{{ ld.party }}</td>
+                        <td style="text-align:right">{{ ld.amount }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="appendix-col">
+            <table class="lien-detail-table">
+                <thead>
+                    <tr>
+                        <th>Lien ID</th>
+                        <th>Date</th>
+                        <th>Party</th>
+                        <th style="text-align:right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ld in data.lien_details[mid:] %}
+                    <tr{% if ld.flagged %} class="lien-flagged"{% endif %}>
+                        <td>{{ ld.lien_id }}</td>
+                        <td>{{ ld.date_filed }}{% if ld.flagged %} &#9888;{% endif %}</td>
+                        <td>{{ ld.party }}</td>
+                        <td style="text-align:right">{{ ld.amount }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="lien-total-bar">
+        <span>Total ({{ data.lien_details | length }} liens)</span>
+        <span style="float:right">{{ lien_total }}</span>
+    </div>
+    {% set flagged_count = data.lien_details | selectattr('flagged') | list | length %}
+    {% if flagged_count > 0 %}
+    <div class="lien-legend">
+        &#9888; <strong>{{ flagged_count }} liens filed before 02/25/2019</strong> (QCD recording date) &mdash; these liens were filed while the party held an ownership interest and may attach to the property.
+    </div>
+    {% endif %}
+</div>
+
+</div>
+</body>
+</html>

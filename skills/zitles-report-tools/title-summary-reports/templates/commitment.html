@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+{{ css }}
+body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1a1a2e; font-size: 9pt; line-height: 1.45; margin: 0; padding: 0; }
+.commitment-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.commitment-header img { height: 44px; }
+.commitment-header .right { text-align: right; }
+.commitment-header .right .pid-label { font-size: 7pt; text-transform: uppercase; letter-spacing: 1.5px; color: #6b7280; margin-bottom: 2px; }
+.commitment-header .right .pid-value { font-size: 14pt; font-weight: 700; color: #1a1a2e; }
+h1.title { font-size: 16pt; font-weight: 700; color: #1e3a5f; margin: 4px 0 2px; }
+.subtitle { font-size: 8pt; color: #6b7280; margin-bottom: 12px; }
+.prop-banner { background: #f0f4f8; border-left: 4px solid #1e3a5f; padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+.prop-banner .addr { font-size: 12pt; font-weight: 600; }
+.prop-banner .sub { font-size: 8pt; color: #6b7280; margin-top: 2px; }
+.prop-banner .eff { text-align: right; }
+.prop-banner .eff-label { font-size: 7pt; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; }
+.prop-banner .eff-value { font-size: 9pt; font-weight: 600; }
+.schedule { margin-bottom: 14px; }
+.schedule-title { font-size: 10pt; font-weight: 700; color: #1e3a5f; border-bottom: 2px solid #1e3a5f; padding-bottom: 3px; margin-bottom: 8px; }
+.field-row { display: flex; margin-bottom: 5px; }
+.field-label { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7280; width: 140px; flex-shrink: 0; }
+.field-value { font-size: 9pt; font-weight: 500; }
+.item-list { margin: 0; padding: 0; list-style: none; counter-reset: item; }
+.item-list li { counter-increment: item; margin-bottom: 6px; padding-left: 20px; position: relative; font-size: 8.5pt; }
+.item-list li::before { content: counter(item) "."; position: absolute; left: 0; font-weight: 600; color: #1e3a5f; }
+.legal-desc { font-size: 8pt; font-style: italic; color: #374151; margin-top: 4px; line-height: 1.4; }
+.note { font-size: 7.5pt; color: #6b7280; font-style: italic; margin-top: 10px; }
+.page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+<!-- Header -->
+<div class="commitment-header">
+  <div>
+    {% if logo_data %}<img src="data:image/png;base64,{{ logo_data }}" alt="Zitles">{% endif %}
+  </div>
+  <div class="right">
+    <div class="pid-label">Commitment Number</div>
+    <div class="pid-value">{{ data.order_number }}</div>
+  </div>
+</div>
+
+<h1 class="title">TITLE COMMITMENT</h1>
+<div class="subtitle">Generated: {{ data.generated_date }}</div>
+
+<!-- Property Banner -->
+<div class="prop-banner">
+  <div>
+    <div class="addr">{{ data.property_address }}</div>
+    <div class="sub">{{ data.city }}, {{ data.state }} {{ data.zip_code }} &bull; {{ data.county }} County</div>
+  </div>
+  <div class="eff">
+    <div class="eff-label">Effective Date</div>
+    <div class="eff-value">{{ data.search_end_date }}</div>
+  </div>
+</div>
+
+<!-- Schedule A -->
+<div class="schedule">
+  <div class="schedule-title">SCHEDULE A</div>
+  <div class="field-row">
+    <div class="field-label">Effective Date</div>
+    <div class="field-value">{{ data.search_end_date }}</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Proposed Insured</div>
+    <div class="field-value">{{ data.proposed_insured | default('To Be Determined') }}</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Proposed Amount</div>
+    <div class="field-value">{{ data.proposed_amount | default('To Be Determined') }}</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Estate or Interest</div>
+    <div class="field-value">{{ data.estate_type | default('Fee Simple') }}</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Title Vested In</div>
+    <div class="field-value">{{ data.owners }}</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Vesting Deed</div>
+    <div class="field-value">Book {{ data.vesting_deed.book }} / Page {{ data.vesting_deed.page }} ({{ data.vesting_deed.date }})</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Tax Map / Parcel</div>
+    <div class="field-value">{{ data.parcel_id }}</div>
+  </div>
+  <div class="field-row">
+    <div class="field-label">Legal Description</div>
+    <div class="field-value"></div>
+  </div>
+  <div class="legal-desc">{{ data.vesting_deed.legal_description }}</div>
+</div>
+
+<!-- Schedule B-I: Requirements -->
+<div class="schedule">
+  <div class="schedule-title">SCHEDULE B — PART I (Requirements)</div>
+  <p style="font-size: 8pt; color: #374151; margin-bottom: 6px;">The following requirements must be met prior to the issuance of the policy:</p>
+  <ol class="item-list">
+    {% for req in data.requirements %}
+    <li>{{ req }}</li>
+    {% endfor %}
+  </ol>
+</div>
+
+<!-- Schedule B-II: Exceptions -->
+<div class="schedule">
+  <div class="schedule-title">SCHEDULE B — PART II (Exceptions)</div>
+  <p style="font-size: 8pt; color: #374151; margin-bottom: 6px;">The policy will not insure against loss or damage arising by reason of the following:</p>
+  <ol class="item-list">
+    {% for exc in data.exceptions %}
+    <li>{{ exc }}</li>
+    {% endfor %}
+  </ol>
+</div>
+
+<div class="note">This commitment is for informational purposes only and is not a contract of title insurance. Issued by Zitles for reference in connection with the proposed transaction described herein.</div>
+
+</body>
+</html>
