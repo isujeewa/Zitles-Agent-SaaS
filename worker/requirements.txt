@@ -1,0 +1,13 @@
+# Claude Agent SDK
+claude-agent-sdk
+
+# Direct Claude API client (used inside zitles-report-tools for parallel extraction)
+anthropic
+
+# Skills runtime deps
+pdfkit
+jinja2
+PyPDF2
+python-docx
+google-cloud-vision
+PyMuPDF
