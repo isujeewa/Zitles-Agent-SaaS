@@ -47,7 +47,7 @@ Egress  → workers route HTTPS through SOCKS5 → daemon → user's home ISP IP
 | State | DynamoDB — tables: `jobs`, `job_events`, `daemon_sessions`, `pending_inputs` |
 | Blobs | S3 bucket `zitles-skills-develop-jobs` |
 | Skills | Baked into worker Docker image, stored in private ECR |
-| Secrets | SSM `/zitles-agentic-platform/develop/*` |
+| Secrets | Secrets Manager for values; SSM `/zitles-agentic-platform/develop/*-secret-arn` holds the pointer |
 | Tunnel | Single Fargate task; outbound WebSocket from daemon, exposes SOCKS5 to workers |
 | Egress | Routed through user's residential IP via the daemon |
 
@@ -70,12 +70,13 @@ Both live at `/Users/sujeewa/Documents/Zitles/Development/title-summary-reports-
 | Output retention | 30 days in S3 | Lifecycle to Glacier or extend |
 | Environments | `develop` only | Add staging + production |
 | Tunnel coordinator | Single Fargate task | Horizontal with consistent hashing on `user_id` |
-| Anthropic API key | One shared key in SSM | Per-org keys via Admin API |
+| Anthropic API key | One shared key in Secrets Manager (ARN in SSM) | Per-org keys via Admin API |
+| Orchestrator model | Sonnet 4.6 for orchestration; Haiku for OCR/extraction subagents | Pin per-skill or per-phase based on cost data |
 
 ## Conventions inherited from zitles-api
 
 - Stages: local / develop / qa / staging / production
-- SSM uppercase-snake-case, namespaced under `/zitles-agentic-platform/<stage>/*`
+- **Secrets pattern:** real secret values live in AWS Secrets Manager; SSM under `/zitles-agentic-platform/<stage>/*-secret-arn` stores only the ARN pointer. Apps read the SSM pointer, then fetch the value. Example today: `/zitles-agentic-platform/develop/anthropic-secret-arn` → `arn:aws:secretsmanager:...:secret:zitles-agentic-platform/develop/anthropic-api-key-L1txwy`
 - Cognito JWT validation, role + permission lookup
 - Same AWS account, same region, same profile
 
