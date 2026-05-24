@@ -101,16 +101,88 @@ zitles-skills-platform/
   README.md
 ```
 
+## Tunnel coordinator design (production)
+
+The tunnel coordinator is the single most security-sensitive component. Its job: route a Fargate worker's HTTPS traffic out through the *correct* user's home IP, and refuse to do so for anyone else.
+
+### Routing mechanism: SOCKS5 username = signed job egress token
+
+One SOCKS5 listener (port 1080) on the coordinator. Worker authenticates each SOCKS5 connection with a per-job token (RFC 1929 username/password auth). The token is the routing target.
+
+```
+Worker:    HTTPS_PROXY=socks5h://coordinator.internal:1080
+           SOCKS5 auth: username=<job_egress_token>
+
+Token shape (HMAC-signed, ~44 char base64):
+  { "job_id", "user_id", "org_id", "allowed_hosts": [...], "exp" }
+
+Coordinator on CONNECT:
+  1. Verify token signature (key from Secrets Manager, rotated weekly)
+  2. Extract user_id
+  3. Lookup DynamoDB daemon_sessions[user_id] → connection_id
+  4. Verify daemon WebSocket is alive (heartbeat within 30s)
+  5. Check destination host is in token.allowed_hosts
+  6. Forward TCP bytes through that user's WebSocket
+
+Daemon on receiving forwarded bytes:
+  7. Check destination host against its LOCAL allowlist (defense-in-depth)
+  8. Open socket on user's home network
+  9. Stream bytes back through WebSocket
+```
+
+### Why not per-user ports / per-user hostnames
+
+Token-based auth scales to any user count with one listener. Per-user ports run out of port space and bloat security groups. Per-user hostnames add DNS + TLS cert management for no real gain.
+
+### Daemon-side connection
+
+```
+Daemon → wss://coordinator.zitles.com/v1/daemon?token=<cognito JWT>
+Coordinator validates JWT, writes daemon_sessions row:
+  { user_id, connection_id, coordinator_task_id, last_seen }
+Heartbeat every 30s. Row TTL = 90s. Coordinator clears the row on close.
+```
+
+### Failure modes are explicit
+
+| When | Result |
+|------|--------|
+| Daemon offline at SOCKS5 CONNECT | Reply 0x04 (host unreachable, reason `daemon_offline`); worker writes `job.status="paused: awaiting daemon"`; user sees "Reconnect zitles-agent" in UI. |
+| Token expired | SOCKS5 reply 0x02 (rule blocked); worker fetches new token from API. |
+| Destination not in `allowed_hosts` | SOCKS5 reply 0x02; logged as audit event. |
+| Daemon's local allowlist refuses | Connection drops; worker logs proxy error. |
+
+**Workers never silently route through a different path.** If the user's daemon isn't there, the job stops.
+
+### Scaling
+
+- v1: single coordinator Fargate task. Handles ~5,000 concurrent WebSockets.
+- v2: multi-task behind an NLB. DynamoDB `daemon_sessions` tells which task owns which user. Cross-task routing OR sticky LB on the daemon WS handshake.
+
+### `chisel` is NOT the production tunnel
+
+`chisel` is the POC scaffold only. It has no multi-tenant auth, no per-user allowlist, no per-request audit. **Production replaces it with the custom coordinator above** — ~2–3 dev weeks of work, included in v1 scope.
+
+### Captcha handling — REVISED 2026-05-24
+
+**Earlier decision (replaced):** "Captcha handling lives in the daemon (local browser popup)."
+
+**Current decision:** **Captcha screenshots/iframes surface via the API + WebSocket push to the user's web UI.** User solves the captcha in their normal browser tab; the token/cookies flow back to the worker's Playwright session.
+
+Why the change:
+- Keeps the daemon as a pure SOCKS5 forwarder (no GUI, no browser dependency, no cookie-injection plumbing).
+- Reuses the same `pending_inputs` / WebSocket-push pipeline we already need for semantic prompts ("which John Smith?").
+- Worker's Playwright session stays the authoritative HTTP client; cookies remain in its TLS context.
+- Daemon-side captcha may still be needed for sites with sophisticated browser-fingerprint detection — that's a v2 concern, not v1.
+
 ## Assumptions absorbed (revisit during build, not blocking)
 
-- **Daemon auth:** one-time token paste from web UI into daemon config; daemon then holds long-lived JWT, refreshable via API.
+- **Daemon auth:** one-time token paste from web UI into daemon config; daemon then holds long-lived Cognito JWT, refreshable via API.
 - **Worker death recovery:** requeue from last phase checkpoint, max 3 retries, then dead-letter to a `failed_jobs` record for manual review.
 - **Job IDs are UUIDs**, not sequential.
 - **Every DynamoDB write includes `user_id` and `org_id`** from day one, even though only one user matters in v1.
 - **API is stateless.** No in-memory sessions, no caches.
-- **Daemon protocol carries `job_id` on every frame** — enables multi-job multiplexing later without a protocol break.
-- **Captcha handling lives in the daemon** (local browser popup, cookie injection back into tunnel). Not routed through cloud.
-- **Semantic user input** (disambiguation, decisions) handled via DynamoDB `pending_inputs` + WebSocket push to UI.
+- **Semantic user input** (disambiguation, decisions, captcha responses) handled via DynamoDB `pending_inputs` + WebSocket push to UI.
 
 ## Threat model
 
@@ -122,10 +194,10 @@ zitles-skills-platform/
 ## Build order — thin slice first
 
 1. Dockerize worker with skills baked in. Run one TMS (Berkeley 265-16-04-023) end-to-end inside the container locally.
-2. Validate egress: route container traffic through `chisel` from laptop, confirm county portal sees home IP.
+2. Validate egress mechanics: route container traffic through `chisel` from laptop, confirm county portal sees home IP. (POC scaffolding only — see "Tunnel coordinator design" above; `chisel` is not the production tunnel.)
 3. Push container to private ECR. Run as a Fargate task manually (no API, no queue yet).
 4. Add API + DynamoDB + SQS + ECS RunTask trigger. Real product surface.
-5. Replace `chisel` with the custom `zitles-agent` daemon.
+5. Build the production tunnel coordinator (FastAPI + WebSocket + SOCKS5 + token validation) and the `zitles-agent` daemon. `chisel` is retired at this point.
 
 Step 5 is last, not first — every earlier step works without it.
 
@@ -133,7 +205,7 @@ Step 5 is last, not first — every earlier step works without it.
 
 Even for internal-only v1, these are required so the daemon doesn't look like spyware to a competent IT reviewer:
 
-- **Domain allowlist in the daemon.** Daemon refuses to proxy traffic to anything not on a server-supplied allowlist (county portals, assessor sites). Means a compromised cloud worker can't use the daemon to exfiltrate to attacker.com.
+- **Dual-layer domain allowlist.** (1) Coordinator validates each SOCKS5 CONNECT against the `allowed_hosts` field in the per-job token. (2) Daemon also validates against its own server-supplied allowlist. Both must pass. Defense-in-depth: if the coordinator is compromised, the daemon still refuses unknown destinations.
 - **Active-only tunneling.** Daemon forwards traffic only while a job is actively running. Idle = no tunnel.
 - **Local audit log.** Rolling log on the user's machine: "proxied X requests to {domain} during job {job_id}." User-inspectable, IT-collectable.
 - **Cloud audit trail.** Every job: who started it, what skill, what TMS, what egress, how many tokens, when it ended. CloudWatch + Athena over DynamoDB export.
