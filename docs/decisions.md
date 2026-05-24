@@ -129,6 +129,27 @@ zitles-skills-platform/
 
 Step 5 is last, not first — every earlier step works without it.
 
+## Security baseline for v1 (must ship)
+
+Even for internal-only v1, these are required so the daemon doesn't look like spyware to a competent IT reviewer:
+
+- **Domain allowlist in the daemon.** Daemon refuses to proxy traffic to anything not on a server-supplied allowlist (county portals, assessor sites). Means a compromised cloud worker can't use the daemon to exfiltrate to attacker.com.
+- **Active-only tunneling.** Daemon forwards traffic only while a job is actively running. Idle = no tunnel.
+- **Local audit log.** Rolling log on the user's machine: "proxied X requests to {domain} during job {job_id}." User-inspectable, IT-collectable.
+- **Cloud audit trail.** Every job: who started it, what skill, what TMS, what egress, how many tokens, when it ended. CloudWatch + Athena over DynamoDB export.
+- **Kill switch.** User can disconnect the daemon at any time; running jobs fail with `error: tunnel_disconnected`.
+- **Encryption everywhere.** S3 + KMS, DynamoDB native encryption, TLS in transit. Already free with the chosen stack.
+
+## Deferred to v2 (external customers / compliance)
+
+- Code signing (Apple Developer + Windows EV cert) — ~$600/yr + ~1 week wiring
+- Auto-update with signature verification (Sparkle or similar)
+- SOC 2 Type II audit — ~$30–80k + 6–12 months
+- Penetration test — ~$15–30k
+- Vendor security questionnaire pre-fill (CAIQ, SIG)
+- DPA / SCC templates for GDPR-adjacent customers
+- BYOK for KMS
+
 ## Explicitly NOT in v1 scope
 
 - Production environment

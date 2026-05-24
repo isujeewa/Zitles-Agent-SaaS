@@ -1,0 +1,143 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Zitles-Agent-SaaS POC stack. Minimum AWS infra to run the worker container
+  on Fargate as a one-shot task. ECR repo for the image, ECS cluster, task
+  definition pulling secrets from the existing Secrets Manager entry, IAM
+  roles, and a CloudWatch log group. Throwaway-ready: `aws cloudformation
+  delete-stack` removes everything.
+
+Parameters:
+  AnthropicSecretArn:
+    Type: String
+    Description: ARN of the Secrets Manager secret containing the Anthropic API key
+    Default: arn:aws:secretsmanager:us-east-1:442063206610:secret:zitles-agentic-platform/develop/anthropic-api-key-L1txwy
+
+  ImageTag:
+    Type: String
+    Default: latest
+    Description: ECR image tag the task definition references
+
+  CpuArchitecture:
+    Type: String
+    Default: ARM64
+    AllowedValues: [ARM64, X86_64]
+    Description: >
+      Match the architecture of the pushed image. Local dev on Apple Silicon
+      defaults to ARM64; Fargate supports both.
+
+Resources:
+  WorkerRepo:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: zitles-skills-worker
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/ecs/zitles-skills-worker
+      RetentionInDays: 7
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: zitles-skills
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
+  ExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+        - PolicyName: ReadAnthropicSecret
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref AnthropicSecretArn
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: zitles-skills-worker
+      RequiresCompatibilities: [FARGATE]
+      NetworkMode: awsvpc
+      Cpu: '1024'
+      Memory: '4096'
+      ExecutionRoleArn: !GetAtt ExecutionRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      RuntimePlatform:
+        CpuArchitecture: !Ref CpuArchitecture
+        OperatingSystemFamily: LINUX
+      ContainerDefinitions:
+        - Name: worker
+          Image: !Sub '${WorkerRepo.RepositoryUri}:${ImageTag}'
+          Essential: true
+          Environment:
+            - Name: RUN_SKILL
+              Value: title-abstract
+            - Name: ORCH_MODEL
+              Value: claude-sonnet-4-6
+            - Name: PYTHONUNBUFFERED
+              Value: '1'
+          Secrets:
+            - Name: ANTHROPIC_API_KEY
+              ValueFrom: !Ref AnthropicSecretArn
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogGroup
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
+Outputs:
+  RepoUri:
+    Description: ECR repository URI for the worker image
+    Value: !GetAtt WorkerRepo.RepositoryUri
+  ClusterName:
+    Description: ECS cluster name
+    Value: !Ref Cluster
+  TaskDefArn:
+    Description: Task definition ARN (use with `aws ecs run-task`)
+    Value: !Ref TaskDefinition
+  LogGroupName:
+    Description: CloudWatch log group for task output
+    Value: !Ref LogGroup
