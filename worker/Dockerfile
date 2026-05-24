@@ -24,7 +24,17 @@ COPY skills/zitles-report-tools   /app/skills/zitles-report-tools
 
 COPY worker/run_skill.py /app/run_skill.py
 
+# Claude Agent SDK refuses to bypass permissions while running as root (sane
+# safety guard). Create a non-root user and grant it ownership of the dirs the
+# worker reads and writes.
+RUN useradd -m -u 1001 -s /bin/bash worker \
+ && mkdir -p /work \
+ && chown -R worker:worker /work /app
+
+USER worker
+
 ENV PYTHONUNBUFFERED=1 \
+    HOME=/home/worker \
     SKILLS_ROOT=/app/.claude/skills \
     REPORT_TOOLS_ROOT=/app/skills/zitles-report-tools
 

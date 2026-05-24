@@ -4,6 +4,9 @@ claude-agent-sdk
 # Direct Claude API client (used inside zitles-report-tools for parallel extraction)
 anthropic
 
+# AWS — for uploading outputs to S3 at task exit
+boto3
+
 # Skills runtime deps
 pdfkit
 jinja2

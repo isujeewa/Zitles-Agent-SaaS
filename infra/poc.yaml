@@ -36,6 +36,26 @@ Resources:
         - Key: Project
           Value: zitles-skills-poc
 
+  # Per-job output bucket. Skill artifacts (transcript, screenshots, decisions.json,
+  # PDFs) are uploaded here under jobs/{job_id}/ at task exit.
+  OutputBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'zitles-skills-poc-jobs-${AWS::AccountId}'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpirePocJobs
+            Status: Enabled
+            ExpirationInDays: 30
+      Tags:
+        - Key: Project
+          Value: zitles-skills-poc
+
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -87,6 +107,23 @@ Resources:
             Principal:
               Service: ecs-tasks.amazonaws.com
             Action: sts:AssumeRole
+      Policies:
+        - PolicyName: WriteJobOutputs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:PutObjectTagging
+                  - s3:AbortMultipartUpload
+                Resource: !Sub '${OutputBucket.Arn}/jobs/*'
+              - Effect: Allow
+                Action: s3:ListBucket
+                Resource: !GetAtt OutputBucket.Arn
+                Condition:
+                  StringLike:
+                    s3:prefix: 'jobs/*'
       Tags:
         - Key: Project
           Value: zitles-skills-poc
@@ -115,6 +152,10 @@ Resources:
               Value: claude-sonnet-4-6
             - Name: PYTHONUNBUFFERED
               Value: '1'
+            - Name: OUTPUT_S3_BUCKET
+              Value: !Ref OutputBucket
+            - Name: AWS_REGION
+              Value: !Ref AWS::Region
           Secrets:
             - Name: ANTHROPIC_API_KEY
               ValueFrom: !Ref AnthropicSecretArn
@@ -141,3 +182,6 @@ Outputs:
   LogGroupName:
     Description: CloudWatch log group for task output
     Value: !Ref LogGroup
+  OutputBucketName:
+    Description: S3 bucket where worker uploads per-job artifacts
+    Value: !Ref OutputBucket
